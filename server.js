@@ -1,15 +1,19 @@
 const express = require("express");
-const mongojs = require("mongojs");
 const logger = require("morgan");
+const mongoose = require("mongoose");
 const session = require('express-session');
-
-
-const db = mongojs();
+const path = require("path");
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(logger("dev"));
+
+
+const db = require("./models");
+
 
 mongoose.connect(
-    process.env.MONGODB_URI || 'mongodb://localhost/deep-thoughts',
+    process.env.MONGODB_URI || 'mongodb://localhost/exercisetrackerdb', { useNewUrlParser: true },
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -19,28 +23,15 @@ mongoose.connect(
   );
 
 
-const sess = {
-    secret: 'Super secret secret',
-    cookie: {},
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({
-      db: sequelize
-    })
-  };
-  
-  app.use(session(sess));
-
-
-app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
+app.use(logger("dev"));
 
 db.on("error", error => {
   console.log("Database Error:", error);
 });
 
-sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log('Now listening'));
-  });
+app.listen(PORT, () => {
+  console.log(`App running on port ${PORT}!`);
+});
