@@ -1,5 +1,5 @@
-const express = require("express");
-const db = require("./models");
+const express = require("express").Router;
+const db = require("../../models");
 const app = express();
 
 db.Workout.create({ name: "Workouts" })
@@ -11,10 +11,9 @@ db.Workout.create({ name: "Workouts" })
   });
 
   app.post("/", ({body}, res) => {
-    db.Book.create(body)
-      .then(({_id}) => db.Library.findOneAndUpdate({}, { $push: { books: _id } }, { new: true }))
-      .then(dbLibrary => {
-        res.json(dbLibrary);
+    db.Workout.create(body)
+      .then(dbWorkout => {
+        res.json(dbWorkout);
       })
       .catch(err => {
         res.json(err);
