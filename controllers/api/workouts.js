@@ -19,3 +19,14 @@ db.Workout.create({ name: "Workouts" })
         res.json(err);
       });
   });
+
+  // app.get("/", ({body}, res) => {
+  //   const workout = body;
+  //   db.Workout.save(workout, (error, saved) => 
+  //   { if (error) {
+  //     console.log(error);
+  //   } else {
+  //     res.send(saved);
+  //   }})
+     
+  // });
